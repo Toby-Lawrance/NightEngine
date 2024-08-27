@@ -5,7 +5,7 @@
 
 #include "interfaces/IState.h"
 
-#include <GameEngine.h>
+#include "Engine.h"
 
 namespace NightEngine {
     IState::IState(std::string  stateID) :

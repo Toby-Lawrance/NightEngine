@@ -2,7 +2,7 @@
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 set(cpp_srcs
-        GameEngine.cpp
+        Engine.cpp
         managers/StateManager.cpp
         interfaces/IState.cpp
 )
@@ -13,9 +13,9 @@ FetchContent_Declare(SFML
         GIT_TAG origin/master)
 FetchContent_MakeAvailable(SFML)
 
-add_library(Game-Engine ${cpp_srcs})
-target_include_directories(Game-Engine PUBLIC ../include)
-target_link_libraries(Game-Engine PUBLIC
+add_library(NightEngine ${cpp_srcs})
+target_include_directories(NightEngine PUBLIC ../include)
+target_link_libraries(NightEngine PUBLIC
         SFML::System
         SFML::Window
         SFML::Graphics
