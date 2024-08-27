@@ -8,8 +8,6 @@
 #include <interfaces/IState.h>
 
 namespace NightEngine {
-	class GameEngine;
-
 	class StateManager {
 public:
 	StateManager();
