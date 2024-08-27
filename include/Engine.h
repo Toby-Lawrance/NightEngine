@@ -46,9 +46,7 @@ namespace NightEngine
     protected:
         explicit Engine(std::string title = "NightEngine Application");
 
-        virtual void UpdateLoop();
-
-        virtual void RenderLoop();
+        virtual void GameLoop();
 
         virtual void ProcessInput(std::shared_ptr<IState> activeState);
 
@@ -59,8 +57,6 @@ namespace NightEngine
         bool m_Running;
 
         void InitRenderer();
-
-        std::thread m_UpdateThread;
 
         int m_ExitCode;
 

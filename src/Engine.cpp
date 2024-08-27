@@ -32,11 +32,9 @@ namespace NightEngine {
 
         assert(m_StateManager.GetActiveState() != nullptr);
 
-        m_UpdateThread = std::thread(&Engine::UpdateLoop, this);
-
         InitRenderer();
 
-        RenderLoop();
+        GameLoop();
 
         HandleCleanup();
 
@@ -62,37 +60,19 @@ namespace NightEngine {
         m_Instance = this;
     }
 
-    void Engine::UpdateLoop() {
-        sf::Clock updateClock;
-
-        const float targetUPS = 60.0f;
-        const float targetDT = 1.f / targetUPS;
-        const sf::Time targetDeltaTime = sf::seconds(targetDT);
-        while (IsRunning()) {
-            const auto deltaTime = updateClock.restart();
-
-            m_StateManager.Update(deltaTime.asSeconds());
-
-            const auto dtPostUpdate = updateClock.getElapsedTime();
-            const auto sleepTime = targetDeltaTime - dtPostUpdate;
-            sleep(sleepTime);
-        }
-    }
-
-    void Engine::RenderLoop() {
+    void Engine::GameLoop() {
 
         sf::Clock renderClock;
 
         while (IsRunning()) {
             const float deltaTime = renderClock.restart().asSeconds();
-            if(const auto activeState = m_StateManager.GetActiveState()) {
-                ProcessInput(activeState);
-            }
+            const auto activeState = m_StateManager.GetActiveState();
+            ProcessInput(activeState);
+
+            m_StateManager.Update(deltaTime);
 
             m_Window.clear(sf::Color::Black);
-
             m_StateManager.Draw(deltaTime);
-
             m_Window.display();
         }
     }
@@ -121,8 +101,6 @@ namespace NightEngine {
     }
 
     void Engine::Cleanup() {
-        m_UpdateThread.join();
-
         if(m_Window.isOpen()) {
             m_Window.setMouseCursorVisible(true);
             m_Window.close();
